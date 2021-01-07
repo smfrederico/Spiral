@@ -1,0 +1,27 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.animation import FuncAnimation
+
+theta = np.arange(0, 6*np.pi, 0.01)
+r = np.exp(0.05*theta)
+
+fig, ax = plt.subplots(subplot_kw={'projection': 'polar'})
+ax.plot(theta, r)
+ax.set_rmax(2)
+radialticks = range(0,2,1)
+ax.set_rticks(radialticks)  # Less radial ticks
+ax.set_rlabel_position(-22.5)  # Move radial labels away from plotted line
+ax.grid(True)
+
+thetadata, rdata = [], []
+ln, = plt.plot([], [], 'bo')
+
+def update(frame):
+    thetadata.append(frame)
+    rdata.append(np.exp(0.05*frame))
+    ln.set_data(thetadata, rdata)
+    return ln,
+
+ani = FuncAnimation(fig, update, frames=np.arange(0, 6*np.pi, 0.1),init_func=None, blit=True)
+ax.set_title("Logarithmic Spiral", va='bottom')
+plt.show()
